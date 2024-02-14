@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop #2 - Consume API</title>
+
+  <script>
+    const completed = (response) => {
+      const data = JSON.parse(response.target.responseText);
+      document.getElementById('result').innerHTML = `Tipo de Cambio Dolares ${data.TipoCompraDolares}`;
+    };
+
+    const error = () => console.log(this.responseText);
+
+    function getExchange() {
+      const ajaxRequest = new XMLHttpRequest(); //AJAX
+      ajaxRequest.addEventListener("load", completed);
+      ajaxRequest.addEventListener("error", error);
+      ajaxRequest.open("GET", "http://localhost:3001/tipocambio");
+      ajaxRequest.send();
+    }
+  </script>
+</head>
+
+<body>
+  <button onclick="getDolarEuroValues();">Tipo de Cambio</button>
+  <h3>Results:</h3>
+  <div id="result"></div>
+
+  <select name="countries" id="countries" onchange="getCurrency()">
+  </select>
+
+  <h3>Moneda Actual</h3>
+  <p id="currency"></p>
+
+  <h3>Valor en Dolares</h3>
+  <p id="dolar"></p>
+
+  <h3>Valor en Euros</h3>
+  <p id="euro"></p>
+
+  <script>
+
+    // Intentos fallido
+    /*function getCurrencies() {
+      const ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.addEventListener("get", (e) => {
+        const countries = JSON.parse(e.target.responseText);
+        for (key in country.currencies) {
+          countriesData.push(key);
+        }
+      })
+      ajaxRequest.open("GET", "https://restcountries.com/v3.1/all?fields=name,currencies");
+      ajaxRequest.send();
+      return countriesData;
+    }*/
+    /*countries.forEach(country => {
+            optionsHtml += `<option value="${country.currencies}">${country.name.common}</option>`;
+          });*/
+
+    //console.log(countriesData);
+
+    /*selected.addEventListener("change", function() {
+          const selectedOption = selected.option[selected.selectedIndex];
+          document.getElementById("currency").innerHTML = selectedOption;
+        })*/
+
+
+
+    //Llenar el select
+
+    let countriesData = {};
+    const ajaxRequest = new XMLHttpRequest(); //AJAX
+    ajaxRequest.addEventListener("load", (e) => {
+
+      const countries = JSON.parse(e.target.responseText);
+      let optionsHtml = "";
+
+
+      for (key in countries) {
+        optionsHtml += `<option value="${countries[key].currency}">${countries[key].name}</option>`;
+      };
+
+      document.getElementById("countries").innerHTML = optionsHtml;
+    });
+    ajaxRequest.addEventListener("error", () => { });
+    ajaxRequest.open("GET", "http://localhost:3001/countriesData");
+    ajaxRequest.send();
+
+    //Para insertar el currency en la pantalla
+
+    function getCurrency() {
+      const select = document.getElementById("countries");
+      const options = document.getElementsByTagName("option");
+      //document.getElementById("currency").innerHTML = options[select.value-1];
+      document.getElementById("currency").innerHTML = select.options[select.selectedIndex].value;
+    }
+
+    // Nota: Reiniciar el AjaxRequest cada que lo vaya a usar.
+    function getDolarValue(curr) {
+      const ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.addEventListener("load", (e) => {
+        const type = JSON.parse(e.target.responseText);
+        document.getElementById("dolar").innerHTML = type[curr];
+      })
+      ajaxRequest.open("GET", `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/${curr}.json`);
+      ajaxRequest.send();
+    }
+
+    function getEuroValue(curr) {
+      const ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.addEventListener("load", (e) => {
+        const type = JSON.parse(e.target.responseText);
+        document.getElementById("euro").innerHTML = type[curr];
+      })
+      ajaxRequest.open("GET", `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/${curr}.json`);
+      ajaxRequest.send();
+    }
+
+    function getDolarEuroValues() {
+      const curreCal = document.getElementById("currency").innerHTML;
+      //console.log("get dolar euro value:" + curreCal)
+      getDolarValue(curreCal);
+      getEuroValue(curreCal);
+    }
+
+
+
+  </script>
+</body>
+
+</html>
