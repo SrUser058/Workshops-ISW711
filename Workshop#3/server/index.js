@@ -1,7 +1,8 @@
 const express = require('express');
 //const cors = require("cors");
 
-//Diferencia de usar bodyparse a solo express?
+//Diferencia de usar bodyparse a solo express? 
+//Que depende de la version de express no parsea el body.
 //const bodyParser = require("body-parser");
 const app = express();
 
@@ -9,10 +10,10 @@ app.use(express.json());
 
 // ¿Es mejor usar funtion o =>?
 app.get('/hello/:messange', (req,res) => {
-    if(!req.params.messange) {
-        res.send("Hello World!")
+    if(req.params.messange) {
+        res.send(`Hello ${req.params.messange}`)
     }
-    res.send(`Hello ${req.params.messange}`)    
+    res.send(`Hello World!`)    
 })
 
 app.get('/', (req,res) => {
