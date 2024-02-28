@@ -56,8 +56,8 @@ app.post("/api/university", universityPost);
 app.get("/api/major/:id", majorGet);
 app.get("/api/major", majorGet);
 app.post("/api/major", majorPost);
-app.patch("/api/major", majorPut);
-app.patch("/api/major/:id", majorPut);
+app.put("/api/major", majorPut);
+app.put("/api/major/:id", majorPut);
 app.delete("/api/major", majorDelete);
 app.delete("/api/major/:id", majorDelete);
 
