@@ -21,7 +21,7 @@ const universityPost = async (req, res) => {
 
 const universityGet = (req, res) => {
     if(req.params && req.params.id) {
-        University.findById(req.params.id).populate('teacher')
+        University.findById(req.params.id).populate('university')
         .then((university) => {
             res.json(university);
         })
