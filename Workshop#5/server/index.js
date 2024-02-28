@@ -23,6 +23,10 @@ const {
   universityPost, universityGet
 } = require("./controllers/universityController.js");
 
+const {
+  majorGet, majorPost, majorPut, majorDelete
+} = require("./controllers/majorController.js");
+
 // parser for the request body (required for the POST and PUT methods)
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -48,5 +52,13 @@ app.post("/api/courses", coursePost);
 
 app.get("/api/university", universityGet);
 app.post("/api/university", universityPost);
+
+app.get("/api/major/:id", majorGet);
+app.get("/api/major", majorGet);
+app.post("/api/major", majorPost);
+app.patch("/api/major", majorPut);
+app.patch("/api/major/:id", majorPut);
+app.delete("/api/major", majorDelete);
+app.delete("/api/major/:id", majorDelete);
 
 app.listen(3001, () => console.log(`Example app listening on port 3001!`))

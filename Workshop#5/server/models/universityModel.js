@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 const university = new Schema({
     name: {type: String},
     located: {type: String},
-    /*course: {
+    majors: {
         type: mongoose.ObjectId,
-        ref: 'Course'
-    },*/
+        ref: 'Major'
+    },
     typeUniversity: {type:String} 
 })
 
